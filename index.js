@@ -1,5 +1,6 @@
 const Reddit = require("snoowrap");
 const dotenv = require("dotenv").config();
+const rp = require("request-promise");
 
 const r = new Reddit({
   userAgent: "script:com.logankuzyk.shareddit-reply-bot:v1.0.0 (by /u/C1RRU5)",
@@ -19,17 +20,21 @@ refresh = async () => {
       context = context.substr(0, context.lastIndexOf("/"));
       console.log("top level comment");
     } else {
-      context = context.substr(0, context.lastIndexOf("/"));
-      context = context.substr(0, context.lastIndexOf("/"));
+      context = context.substr(0, context.lastIndexOf("/") + 1);
       context += parent.substr(parent.indexOf("_") + 1, parent.length - 1);
       console.log(context);
     }
-    let reply =
-      "I turned this comment thread into an image for easy sharing. \n \n View it here: https://shareddit.com" +
-      context +
-      '\n \n If you\'re on desktop, try adding "sha" to the beginning of the reddit URL to generate the image on shareddit! \n \n [author](https://www.reddit.com/user/c1rru5)';
-    trigger.reply(reply);
-    console.log("replied");
+    let link = "https://shareddit.com" + context;
+    rp(link).then(() => {
+      let reply =
+        "I turned this comment thread into an image for easy sharing. \n \n View it here: " +
+        link +
+        '\n \n If you\'re on desktop, try adding "sha" to the beginning of the reddit URL to generate the image on shareddit! \n \n [author](https://www.reddit.com/user/c1rru5)';
+      trigger.reply(reply).catch((e) => {
+        console.log({ e });
+      });
+      console.log("replied");
+    });
   }
   await r.markMessagesAsRead(comments);
   console.log("remaining " + r.ratelimitRemaining);
