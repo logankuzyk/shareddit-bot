@@ -25,7 +25,7 @@ refresh = async () => {
       console.log(context);
     }
     let link = "https://shareddit.com" + context;
-    let generateLink = process.env.BACKEND_RUL + context;
+    let generateLink = process.env.BACKEND_URL + context;
     rp(generateLink).then(() => {
       let reply =
         "I turned this comment thread into an image for easy sharing. \n \n View it here: " +
