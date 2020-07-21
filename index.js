@@ -38,23 +38,16 @@ refresh = async () => {
     });
   }
   await r.markMessagesAsRead(comments);
-  console.log("remaining " + r.ratelimitRemaining);
-  console.log("expiration " + r.ratelimitExpiration);
 };
 
-(module.exports.start = async () => {
-  console.log("bot started");
-  while (true) {
-    if (Date.now() % 20000 == 0) {
-      try {
-        let comments = await refresh();
-      } catch (e) {
-        if (e.statusCode == 400) {
-          //   console.log("http 400 - no unread messages");
-        } else {
-          console.log(e);
-        }
-      }
+module.exports.start = async () => {
+  try {
+    refresh();
+  } catch (e) {
+    if (e.statusCode == 400) {
+      //   console.log("http 400 - no unread messages");
+    } else {
+      console.log(e);
     }
   }
-})();
+};
