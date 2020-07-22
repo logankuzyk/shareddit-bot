@@ -13,6 +13,9 @@ const r = new Reddit({
 refresh = async () => {
   let comments = await r.getInbox({ filter: "unread" });
   for (let trigger of comments) {
+    if (trigger.subject != "username mention") {
+      continue;
+    }
     let parent = await trigger.parent_id;
     let context = await trigger.context;
     context = context.substr(0, context.lastIndexOf("/"));
@@ -26,18 +29,25 @@ refresh = async () => {
     }
     let link = "https://shareddit.com" + context;
     let generateLink = process.env.BACKEND_URL + context;
-    rp(generateLink).then(() => {
+    rp(generateLink).then(async () => {
       let reply =
         "I turned this comment thread into an image for easy sharing. \n \n View it here: " +
         link +
         '\n \n If you\'re on desktop, try adding "sha" to the beginning of the reddit URL to generate the image on shareddit! \n \n [author](https://www.reddit.com/user/c1rru5)';
-      trigger.reply(reply).catch((e) => {
-        console.log({ e });
-      });
-      console.log("replied");
+      try {
+        await trigger.reply(reply);
+        await r.getMessage(trigger).markAsRead();
+        console.log("replied");
+      } catch (e) {
+        if (e.toLowerCase().indexOf("ratelimit" >= 0)) {
+          console.log("rate limit - can't reply right now");
+          return;
+        } else {
+          console.log(e);
+        }
+      }
     });
   }
-  await r.markMessagesAsRead(comments);
 };
 
 module.exports.start = async () => {
@@ -45,7 +55,7 @@ module.exports.start = async () => {
     refresh();
   } catch (e) {
     if (e.statusCode == 400) {
-      //   console.log("http 400 - no unread messages");
+      console.log("http 400 - no unread messages");
     } else {
       console.log(e);
     }
