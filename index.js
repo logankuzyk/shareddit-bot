@@ -33,7 +33,7 @@ refresh = async () => {
       let reply =
         "I turned this comment thread into an image for easy sharing. \n \n View it here: " +
         link +
-        '\n \n If you\'re on desktop, try adding "sha" to the beginning of the reddit URL to generate the image on shareddit! \n \n [author](https://www.reddit.com/user/c1rru5)';
+        '\n \n If you\'re on desktop, try adding "sha" to the beginning of the reddit URL to generate the image on shareddit! \n \n [author](https://www.reddit.com/user/c1rru5) [source/about](https://github.com/logankuzyk/shareddit-bot)';
       try {
         await trigger.reply(reply);
         await r.getMessage(trigger).markAsRead();
