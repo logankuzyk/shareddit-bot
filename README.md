@@ -1,5 +1,5 @@
 # shareddit-bot
-The bot that makes it easier to use [shareddit.com](https://shareddit.com)
+The bot that makes it easier to use [shareddit.com](https://shareddit.com). Check out my video about shareddit [here](https://youtu.be/HJPvwZb9KKI)!
 
 ## About
 shareddit bot is a very simple reddit reply bot. Written in Node, it uses snoowrap for dealing with the reddit API. Currently, it is running on a serverless Google Cloud Function (like AWS Lambda).
