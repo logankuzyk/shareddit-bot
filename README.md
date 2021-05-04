@@ -2,7 +2,7 @@
 The bot that makes it easier to use [shareddit.com](https://shareddit.com). Check out my video about shareddit [here](https://youtu.be/HJPvwZb9KKI)!
 
 ## About
-shareddit bot is a very simple reddit reply bot. Written in Node, it uses snoowrap for dealing with the reddit API. Currently, it is running on a serverless Google Cloud Function (like AWS Lambda).
+shareddit bot is a very simple reddit reply bot. Written in Node, it uses snoowrap for dealing with the reddit API. Currently, it is running on a serverless Google Cloud Function (like AWS Lambda). Every time the script is executed, it checks the bot's inbox and replies to username mentions. The Cloud Function is subscribed to Google Cloud Scheduler (like cron) through Pub/Sub.
 
 ## Purpose
 shareddit uses the information provided by the permalink of a reddit post or comment. Using a desktop browser, it's easy to navigate between pages and to edit the current domain. This bot is designed to be one of the primary ways to use shareddit due to the exposure provided by its comments, as well as its ease of use.
